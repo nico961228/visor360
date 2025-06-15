@@ -3,22 +3,46 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Visor 360° - GitHub Pages</title>
-  <link rel="stylesheet" href="https://cdn.pannellum.org/2.5/pannellum.css"/>
-  <script src="https://cdn.pannellum.org/2.5/pannellum.js"></script>
+  <title>Visor 360</title>
   <style>
-    html, body { margin: 0; height: 100%; }
-    #panorama { width: 100%; height: 100vh; }
+    html, body { margin: 0; height: 100%; overflow: hidden; }
+    #viewer { width: 100%; height: 100%; }
+    #selector { position: absolute; top: 10px; left: 10px; z-index: 2; background: rgba(255,255,255,0.8); padding: 10px; }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/photo-sphere-viewer@5/dist/photo-sphere-viewer.css" />
 </head>
 <body>
-  <div id="panorama"></div>
+  <div id="selector">
+    <select id="imageSelector">
+      <option value="ScanPos001.jpg">ScanPos001.jpg</option>
+<option value="ScanPos002.jpg">ScanPos002.jpg</option>
+<option value="ScanPos003.jpg">ScanPos003.jpg</option>
+<option value="ScanPos004.jpg">ScanPos004.jpg</option>
+<option value="ScanPos005.jpg">ScanPos005.jpg</option>
+
+    </select>
+  </div>
+  <div id="viewer"></div>
+  <script src="https://unpkg.com/uevent@2/browser.js"></script>
+  <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+  <script src="https://unpkg.com/photo-sphere-viewer@5/dist/photo-sphere-viewer.js"></script>
   <script>
-    pannellum.viewer('panorama', {
-      type: 'equirectangular',
-      panorama: 'ScanPos001.jpg',
-      autoLoad: true,
-      showControls: true
+    const images = {
+      "ScanPos001.jpg": "ScanPos001.jpg",
+"ScanPos002.jpg": "ScanPos002.jpg",
+"ScanPos003.jpg": "ScanPos003.jpg",
+"ScanPos004.jpg": "ScanPos004.jpg",
+"ScanPos005.jpg": "ScanPos005.jpg",
+
+    };
+    const viewer = new PhotoSphereViewer.Viewer({
+      container: document.querySelector('#viewer'),
+      panorama: images['ScanPos001.jpg'],
+      defaultLong: Math.PI,
+      navbar: 'zoom move fullscreen',
+    });
+    document.getElementById('imageSelector').addEventListener('change', (e) => {
+      viewer.setPanorama(images[e.target.value]);
     });
   </script>
 </body>
